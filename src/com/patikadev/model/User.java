@@ -125,15 +125,12 @@ public class User {
     }
 
     public static User getFetch(String uname){
-
         User obj = null;
-
         String query = "SELECT * FROM user WHERE uname =?";
 
         try {
             PreparedStatement pr = DBConnector.getInstance().prepareStatement(query);
             pr.setString(1,uname);
-
             ResultSet rs = pr.executeQuery();
             if(rs.next()){
                 obj = new User();
@@ -142,7 +139,6 @@ public class User {
                 obj.setUname(rs.getString("uname"));
                 obj.setPass(rs.getString("pass"));
                 obj.setType(rs.getString("type"));
-
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
