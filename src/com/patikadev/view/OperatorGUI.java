@@ -2,6 +2,7 @@ package com.patikadev.view;
 
 import com.patikadev.Helper.Config;
 import com.patikadev.Helper.Helper;
+import com.patikadev.model.Course;
 import com.patikadev.model.Operator;
 import com.patikadev.model.Patika;
 import com.patikadev.model.User;
@@ -39,12 +40,25 @@ public class OperatorGUI extends JFrame {
     private JPanel pnl_patika_add;
     private JTextField fld_patika_name;
     private JButton btn_patika_add;
+    private JPanel pnl_course_list;
+    private JPanel pnl_user_form;
+    private JPanel pnl_user_top;
+    private JScrollPane scrl_course_list;
+    private JTable tbl_course_list;
+    private JPanel pnl_course_add;
+    private JTextField fld_course_name;
+    private JTextField fld_course_lang;
+    private JComboBox cmb_course_patika;
+    private JComboBox cmb_course_user;
+    private JButton btn_course_add;
     private DefaultTableModel mdl_patika_list;
     private Object[] row_patika_list;
     private DefaultTableModel mdl_user_list;
     private Object[] row_user_list;
     private final Operator operator;
     private JPopupMenu patikaMenu;
+    private DefaultTableModel mdl_course_list;
+    private Object [] row_course_list;
 
 
     public OperatorGUI(Operator operator){
@@ -143,17 +157,8 @@ public class OperatorGUI extends JFrame {
                 } else {
                     Helper.showMessage("error");
                 }
-
-
-
             }
-
-
-
-
         });
-
-
 
         mdl_patika_list = new DefaultTableModel();
         Object[] col_patika_list = {"ID", "Patika Adý"};
@@ -176,6 +181,36 @@ public class OperatorGUI extends JFrame {
         });
 
         // ### PatikaList
+
+
+        // Course List
+
+        mdl_course_list = new DefaultTableModel();
+        Object [] col_courseList = {"ID","Ders Adý","Programlama Dili","Patika","Eðitmen"};
+
+        mdl_course_list.setColumnIdentifiers(col_courseList);
+        row_course_list = new Object[col_courseList.length];
+
+        loadCourseList();
+        tbl_course_list.setModel(mdl_course_list);
+        tbl_course_list.getColumnModel().getColumn(0).setMaxWidth(75);
+        tbl_course_list.getTableHeader().setReorderingAllowed(false);
+
+
+
+
+
+        // ###  Course List
+
+
+
+
+
+
+
+
+
+
 
 
         btn_user_add.addActionListener(e-> {
@@ -254,6 +289,25 @@ public class OperatorGUI extends JFrame {
             }
 
         });
+    }
+
+    private void loadCourseList() {
+
+        DefaultTableModel clearModel = (DefaultTableModel) tbl_course_list.getModel();
+        clearModel.setRowCount(0);
+
+        int i =0;
+        for(Course obj: Course.getList()){
+            i=0;
+            row_course_list[i++] =obj.getId();
+            row_course_list[i++] = obj.getName();
+            row_course_list[i++] = obj.getLang();
+            row_course_list[i++] = obj.getPatika().getName();
+            row_course_list[i++] = obj.getEducator().getName();
+            mdl_course_list.addRow(row_course_list );
+        }
+
+
     }
 
     private void loadPatikaModel() {
